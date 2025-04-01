@@ -8,7 +8,7 @@ interface Prefecture {
 
 const PrefectureList: React.FC = () => {
   const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
-  const [selectedPrefectures, setSelectedPrefectures] = useState<number[]>([]);
+  const [selectedPrefectures, setSelectedPrefectures] = useState<Prefecture[]>([]);
 
   // 都道府県データをAPIから取得する
   useEffect(() => {
@@ -21,13 +21,20 @@ const PrefectureList: React.FC = () => {
       .then(data => setPrefectures(data.result));
   }, []);
 
-  // チェックボックスの変更を管理する
+  // チェックボックスの状態から選択された都道府県のリストを管理する
   const handlePrefectureChange = (prefCode: number) => {
-    setSelectedPrefectures(prevSelected =>
-      prevSelected.includes(prefCode)
-        ? prevSelected.filter(code => code !== prefCode)
-        : [...prevSelected, prefCode]
-    );
+    setSelectedPrefectures(prevSelected => {
+      const selectedPref = prefectures.find(pref => pref.prefCode === prefCode);
+      if (!selectedPref) return prevSelected; //見つからなかった場合
+
+      // すでに選択済みであれば除外し、されていない場合は追加する
+      const isAlereadySelected = prevSelected.some(pref => pref.prefCode === prefCode);
+      if (isAlereadySelected) {
+        return prevSelected.filter(pref => pref.prefCode !== prefCode);
+      } else {
+        return [...prevSelected, selectedPref]; // selectedPrefはPrefecture型
+      }
+    });
   };
 
   return (
@@ -50,28 +57,12 @@ const PrefectureList: React.FC = () => {
         {/* <h3>選択された都道府県：</h3> */}
         <ul>
           {selectedPrefectures.length > 0 ? (
-            <PopulationGraph prefCodes={selectedPrefectures} />
+            <PopulationGraph selectedPrefectures={selectedPrefectures} />
           ) : (
             <li>選択されていません</li>
           )}
         </ul>
       </div>
-
-      {/* <div>
-        <h3>選択された都道府県：</h3>
-        <ul>
-          {selectedPrefectures.length > 0 ? (
-            selectedPrefectures.map(prefCode => {
-              const selectedPref = prefectures.find(p => p.prefCode === prefCode);
-              return selectedPref ? (
-                <li key={selectedPref.prefCode}>{selectedPref.prefName}</li>
-              ) : null;
-            })
-          ) : (
-            <li>選択されていません</li>
-          )}
-        </ul>
-      </div> */}
     </div>
   );
 };
