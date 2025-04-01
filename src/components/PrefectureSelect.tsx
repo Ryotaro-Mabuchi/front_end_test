@@ -40,26 +40,32 @@ const PrefectureList: React.FC = () => {
   return (
     <div>
       <h2>都道府県リスト</h2>
-      <ul>
+      {/* 横並びのためにflexboxを使用 */}
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap', //折り返しを許可する
+          gap: '10px', //アイテム間の間隔
+        }}
+      >
         {prefectures.map(prefecture => (
-          <li key={prefecture.prefCode}>
+          <div key={prefecture.prefCode} style={{ flex: '1 0 7%', marginBottom: '10px' }}>
             <input
               type="checkbox"
               value={prefecture.prefCode}
               onChange={() => handlePrefectureChange(prefecture.prefCode)}
             />
-            {prefecture.prefName}
-          </li>
+            <label>{prefecture.prefName}</label>
+          </div>
         ))}
-      </ul>
+      </div>
 
       <div>
-        {/* <h3>選択された都道府県：</h3> */}
         <ul>
           {selectedPrefectures.length > 0 ? (
             <PopulationGraph selectedPrefectures={selectedPrefectures} />
           ) : (
-            <li>選択されていません</li>
+            <div>表示したい都道府県を選択してください</div>
           )}
         </ul>
       </div>
