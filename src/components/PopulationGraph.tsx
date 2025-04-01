@@ -28,10 +28,10 @@ interface PrefecturePopulation {
 
 // PopulationGraphコンポーネントのProps
 interface PopulationGraphProps {
-  prefCodes: number[]; // 複数の都道府県コード
+  selectedPrefectures: { prefCode: number; prefName: string }[]; //選択された都道府県のリスト
 }
 
-const PopulationGraph: React.FC<PopulationGraphProps> = ({ prefCodes }) => {
+const PopulationGraph: React.FC<PopulationGraphProps> = ({ selectedPrefectures }) => {
   const [populationData, setPopulationData] = useState<PrefecturePopulation[]>([]);
   const [selectedPopulation, setSelectedPopulation] = useState<keyof typeof labelMapping>('total'); // 'total', 'youth', 'working', 'elderly'
 
@@ -39,9 +39,9 @@ const PopulationGraph: React.FC<PopulationGraphProps> = ({ prefCodes }) => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await Promise.all(
-        prefCodes.map(prefCode =>
+        selectedPrefectures.map(pref =>
           fetch(
-            `https://yumemi-frontend-engineer-codecheck-api.vercel.app/api/v1/population/composition/perYear?prefCode=${prefCode}`,
+            `https://yumemi-frontend-engineer-codecheck-api.vercel.app/api/v1/population/composition/perYear?prefCode=${pref.prefCode}`,
             {
               headers: {
                 'X-API-KEY': '8FzX5qLmN3wRtKjH7vCyP9bGdEaU4sYpT6cMfZnJ',
@@ -52,7 +52,7 @@ const PopulationGraph: React.FC<PopulationGraphProps> = ({ prefCodes }) => {
             .then(data => {
               if (data.result) {
                 return {
-                  label: `Prefecture ${prefCode}`, // 'label'を追加
+                  label: pref.prefName, // 都道府県名を表示
                   data: data.result.data,
                 };
               }
@@ -66,7 +66,7 @@ const PopulationGraph: React.FC<PopulationGraphProps> = ({ prefCodes }) => {
     };
 
     fetchData();
-  }, [prefCodes]);
+  }, [selectedPrefectures]);
 
   if (populationData.length === 0) {
     return <div>データを読み込んでいます...</div>;
@@ -154,12 +154,12 @@ const PopulationGraph: React.FC<PopulationGraphProps> = ({ prefCodes }) => {
 
             return (
               <Line
-                key={prefPopulation.label} // prefCodeではなく、labelを使う
+                key={prefPopulation.label} // 都道府県名をkey
                 type="monotone"
                 dataKey="population"
                 stroke="#8884d8"
                 data={chartData}
-                name={prefPopulation.label} // labelを使って表示
+                name={prefPopulation.label} // 都道府県名を表示
               />
             );
           })}
