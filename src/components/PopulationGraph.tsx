@@ -10,16 +10,17 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-// PopulationData型の定義
+// PopulationData型の定義=各年の人口データ
 interface PopulationData {
   year: number;
   value: number;
   rate?: number; // rateは一部のカテゴリ（年少人口など）にのみ存在
 }
 
-// PrefecturePopulation型の定義
+// PrefecturePopulation型の定義＝選択された都道府県の人口データ
 interface PrefecturePopulation {
-  label: string; // 都道府県名（または人口カテゴリ名）
+  prefCode: number; //都道府県コード
+  prefName: string; //都道府県名
   data: {
     label: string; // 総人口、年少人口、生産年齢人口、老年人口
     data: PopulationData[]; // 各年の人口データ
@@ -30,6 +31,14 @@ interface PrefecturePopulation {
 interface PopulationGraphProps {
   selectedPrefectures: { prefCode: number; prefName: string }[]; //選択された都道府県のリスト
 }
+
+// グラフの色を都道府県コードによって生成
+const generateColorFromPrefCode = (prefCode: number): string => {
+  const r = (prefCode * 7) % 256;
+  const g = (prefCode * 13) % 256;
+  const b = (prefCode * 17) % 256;
+  return `rgb(${r}, ${g}, ${b})`;
+};
 
 const PopulationGraph: React.FC<PopulationGraphProps> = ({ selectedPrefectures }) => {
   const [populationData, setPopulationData] = useState<PrefecturePopulation[]>([]);
@@ -52,7 +61,8 @@ const PopulationGraph: React.FC<PopulationGraphProps> = ({ selectedPrefectures }
             .then(data => {
               if (data.result) {
                 return {
-                  label: pref.prefName, // 都道府県名を表示
+                  prefCode: pref.prefCode, //都道府県コードを追加
+                  prefName: pref.prefName, // 都道府県名を表示
                   data: data.result.data,
                 };
               }
@@ -126,7 +136,10 @@ const PopulationGraph: React.FC<PopulationGraphProps> = ({ selectedPrefectures }
       </div>
 
       <ResponsiveContainer width="100%" height={400}>
-        <LineChart data={populationData[0]?.data || []}>
+        <LineChart
+          data={populationData[0]?.data || []}
+          margin={{ top: 20, right: 30, left: 40, bottom: 5 }}
+        >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="year"
@@ -152,14 +165,16 @@ const PopulationGraph: React.FC<PopulationGraphProps> = ({ selectedPrefectures }
               population: item.value,
             }));
 
+            const lineColor = generateColorFromPrefCode(prefPopulation.prefCode);
+
             return (
               <Line
-                key={prefPopulation.label} // 都道府県名をkey
+                key={prefPopulation.prefCode} // 都道府県コードをkey
                 type="monotone"
                 dataKey="population"
-                stroke="#8884d8"
+                stroke={lineColor} //都道府県コードによる色
                 data={chartData}
-                name={prefPopulation.label} // 都道府県名を表示
+                name={prefPopulation.prefName} // 都道府県名を表示
               />
             );
           })}
