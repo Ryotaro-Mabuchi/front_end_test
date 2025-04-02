@@ -14,3 +14,9 @@ export interface PrefecturePopulation {
     data: PopulationData[]; // 各年の人口データ
   }[];
 }
+
+// 人口カテゴリの定義(label部分)
+export interface PopulationCategory{
+  categorynumber: number;
+  categoryname: string;
+}
