@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PopulationGraph from './PopulationGraph';
+import getPrefecturesApi from '../api/GetPrefetures';
 
 interface Prefecture {
   prefCode: number;
@@ -12,13 +13,12 @@ const PrefectureList: React.FC = () => {
 
   // 都道府県データをAPIから取得する
   useEffect(() => {
-    fetch('https://yumemi-frontend-engineer-codecheck-api.vercel.app/api/v1/prefectures', {
-      headers: {
-        'X-API-KEY': '8FzX5qLmN3wRtKjH7vCyP9bGdEaU4sYpT6cMfZnJ',
-      },
-    })
-      .then(response => response.json())
-      .then(data => setPrefectures(data.result));
+    const fetchPrefectures = async () => {
+      const data = await getPrefecturesApi();
+      setPrefectures(data);
+    };
+
+    fetchPrefectures();
   }, []);
 
   // チェックボックスの状態から選択された都道府県のリストを管理する
