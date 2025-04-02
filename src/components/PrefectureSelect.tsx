@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PopulationGraph from './PopulationGraph';
 import getPrefecturesApi from '../api/GetPrefetures';
-
-interface Prefecture {
-  prefCode: number;
-  prefName: string;
-}
+import { Prefecture } from '../types/prefecture';
 
 const PrefectureList: React.FC = () => {
   const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
