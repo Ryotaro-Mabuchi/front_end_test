@@ -12,11 +12,20 @@ import {
 import getPopulationAPI from '../api/GetPopulation';
 import { PopulationData } from '../types/population';
 import { PrefecturePopulation } from '../types/population';
+import { PopulationCategory } from '../types/population';
 
 // PopulationGraphコンポーネントのProps
 interface PopulationGraphProps {
   selectedPrefectures: { prefCode: number; prefName: string }[]; //選択された都道府県のリスト
 }
+
+// 人口カテゴリの定義
+const populationCategories: PopulationCategory[] = [
+  { categorynumber: 0, categoryname: '総人口' },
+  { categorynumber: 1, categoryname: '年少人口' },
+  { categorynumber: 2, categoryname: '生産年齢人口' },
+  { categorynumber: 3, categoryname: '老年人口' },
+];
 
 // グラフの色を都道府県コードによって生成
 const generateColorFromPrefCode = (prefCode: number): string => {
@@ -28,7 +37,10 @@ const generateColorFromPrefCode = (prefCode: number): string => {
 
 const PopulationGraph: React.FC<PopulationGraphProps> = ({ selectedPrefectures }) => {
   const [populationData, setPopulationData] = useState<PrefecturePopulation[]>([]);
-  const [selectedPopulation, setSelectedPopulation] = useState<keyof typeof labelMapping>('total'); // 'total', 'youth', 'working', 'elderly'
+  const [selectedPopulationCategory, setSelectedPopulationCategory] = useState<PopulationCategory>({
+    categorynumber: 0,
+    categoryname: '総人口',
+  });
 
   useEffect(() => {
     const fetchPopulationData = async () => {
@@ -45,57 +57,22 @@ const PopulationGraph: React.FC<PopulationGraphProps> = ({ selectedPrefectures }
     return <div>データを読み込んでいます...</div>;
   }
 
-  // 選択された人口カテゴリに基づくラベルのマッピング
-  const labelMapping = {
-    total: '総人口',
-    youth: '年少人口',
-    working: '生産年齢人口',
-    elderly: '老年人口',
-  };
-
   return (
     <div>
       <div>
-        <label>
-          <input
-            type="radio"
-            name="populationType"
-            value="total"
-            checked={selectedPopulation === 'total'}
-            onChange={() => setSelectedPopulation('total')}
-          />
-          総人口
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="populationType"
-            value="youth"
-            checked={selectedPopulation === 'youth'}
-            onChange={() => setSelectedPopulation('youth')}
-          />
-          年少人口
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="populationType"
-            value="working"
-            checked={selectedPopulation === 'working'}
-            onChange={() => setSelectedPopulation('working')}
-          />
-          生産年齢人口
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="populationType"
-            value="elderly"
-            checked={selectedPopulation === 'elderly'}
-            onChange={() => setSelectedPopulation('elderly')}
-          />
-          老年人口
-        </label>
+        {/* categories配列を使用してラジオボタンを作成する */}
+        {populationCategories.map(({ categorynumber, categoryname }) => (
+          <label key={categorynumber}>
+            <input
+              type="radio"
+              name="populationcategory"
+              value={categoryname}
+              checked={selectedPopulationCategory.categorynumber === categorynumber}
+              onChange={() => setSelectedPopulationCategory({ categorynumber, categoryname })}
+            />
+            {categoryname}
+          </label>
+        ))}
       </div>
 
       <ResponsiveContainer width="100%" height={400}>
@@ -116,7 +93,7 @@ const PopulationGraph: React.FC<PopulationGraphProps> = ({ selectedPrefectures }
           {populationData.map(prefPopulation => {
             // 選択されたカテゴリに該当するデータを取得
             const selectedPrefData = prefPopulation.data.find(
-              item => item.label === labelMapping[selectedPopulation]
+              item => item.label === selectedPopulationCategory.categoryname
             );
 
             if (!selectedPrefData) {
