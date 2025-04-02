@@ -9,6 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
+import getPopulationAPI from '../api/GetPopulation';
 
 // PopulationData型の定義=各年の人口データ
 interface PopulationData {
@@ -44,38 +45,15 @@ const PopulationGraph: React.FC<PopulationGraphProps> = ({ selectedPrefectures }
   const [populationData, setPopulationData] = useState<PrefecturePopulation[]>([]);
   const [selectedPopulation, setSelectedPopulation] = useState<keyof typeof labelMapping>('total'); // 'total', 'youth', 'working', 'elderly'
 
-  // APIから人口構成データを取得する
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await Promise.all(
-        selectedPrefectures.map(pref =>
-          fetch(
-            `https://yumemi-frontend-engineer-codecheck-api.vercel.app/api/v1/population/composition/perYear?prefCode=${pref.prefCode}`,
-            {
-              headers: {
-                'X-API-KEY': '8FzX5qLmN3wRtKjH7vCyP9bGdEaU4sYpT6cMfZnJ',
-              },
-            }
-          )
-            .then(response => response.json())
-            .then(data => {
-              if (data.result) {
-                return {
-                  prefCode: pref.prefCode, //都道府県コードを追加
-                  prefName: pref.prefName, // 都道府県名を表示
-                  data: data.result.data,
-                };
-              }
-              return null;
-            })
-        )
-      );
-
-      // nullを除外した後、型を明示的に指定
-      setPopulationData(data.filter(item => item !== null) as PrefecturePopulation[]);
+    const fetchPopulationData = async () => {
+      const data = await getPopulationAPI(selectedPrefectures);
+      setPopulationData(data);
     };
 
-    fetchData();
+    if (selectedPrefectures.length > 0) {
+      fetchPopulationData();
+    }
   }, [selectedPrefectures]);
 
   if (populationData.length === 0) {
