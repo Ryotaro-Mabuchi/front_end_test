@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { Prefecture } from '../types/prefecture';
 
-const getPrefecturesApi = async () => {
+const getPrefecturesApi = async (): Promise<Prefecture[]> => {
   try {
     const response = await axios.get(
       `https://yumemi-frontend-engineer-codecheck-api.vercel.app/api/v1/prefectures`,
