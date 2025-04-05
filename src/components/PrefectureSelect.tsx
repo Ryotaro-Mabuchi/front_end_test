@@ -1,79 +1,57 @@
 import React, { useEffect, useState } from 'react';
-import PopulationGraph from './PopulationGraph';
+import getPrefecturesApi from '../api/GetPrefetures';
+import '../styles/PrefectureSelect.css';
+import { Prefecture } from '../types/prefecture';
 
-interface Prefecture {
-  prefCode: number;
-  prefName: string;
+interface PrefectureSelectProps {
+  selectedPrefectures: Prefecture[];
+  onPrefectureChange: (selectedPrefectures: Prefecture[]) => void;
 }
 
-const PrefectureList: React.FC = () => {
+const PrefectureSelect: React.FC<PrefectureSelectProps> = ({
+  selectedPrefectures,
+  onPrefectureChange,
+}) => {
   const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
-  const [selectedPrefectures, setSelectedPrefectures] = useState<number[]>([]);
-
   // 都道府県データをAPIから取得する
   useEffect(() => {
-    fetch('https://yumemi-frontend-engineer-codecheck-api.vercel.app/api/v1/prefectures', {
-      headers: {
-        'X-API-KEY': '8FzX5qLmN3wRtKjH7vCyP9bGdEaU4sYpT6cMfZnJ',
-      },
-    })
-      .then(response => response.json())
-      .then(data => setPrefectures(data.result));
+    const fetchPrefectures = async () => {
+      const data = await getPrefecturesApi();
+      setPrefectures(data);
+    };
+
+    fetchPrefectures();
   }, []);
 
-  // チェックボックスの変更を管理する
+  // チェックボックスの状態から選択された都道府県のリストを管理する
   const handlePrefectureChange = (prefCode: number) => {
-    setSelectedPrefectures(prevSelected =>
-      prevSelected.includes(prefCode)
-        ? prevSelected.filter(code => code !== prefCode)
-        : [...prevSelected, prefCode]
-    );
+    const selectedPref = prefectures.find(pref => pref.prefCode === prefCode);
+    if (!selectedPref) return;
+
+    const updatedPrefectures = selectedPrefectures.some(pref => pref.prefCode === prefCode)
+      ? selectedPrefectures.filter(pref => pref.prefCode !== prefCode) // すでにリストにある場合は除外
+      : [...selectedPrefectures, selectedPref]; // 新規選択であれば追加
+
+    onPrefectureChange(updatedPrefectures);
   };
 
   return (
-    <div>
-      <h2>都道府県リスト</h2>
-      <ul>
+    <section className="prefecture-select-container">
+      <h2 className="prefecture-select-title">表示する都道府県を選択してください(複数選択可)</h2>
+      <ul className="prefecture-list">
         {prefectures.map(prefecture => (
-          <li key={prefecture.prefCode}>
+          <li key={prefecture.prefCode} className="prefecture-item">
             <input
               type="checkbox"
               value={prefecture.prefCode}
               onChange={() => handlePrefectureChange(prefecture.prefCode)}
             />
-            {prefecture.prefName}
+            <label className="prefecture-label">{prefecture.prefName}</label>
           </li>
         ))}
       </ul>
-
-      <div>
-        {/* <h3>選択された都道府県：</h3> */}
-        <ul>
-          {selectedPrefectures.length > 0 ? (
-            <PopulationGraph prefCodes={selectedPrefectures} />
-          ) : (
-            <li>選択されていません</li>
-          )}
-        </ul>
-      </div>
-
-      {/* <div>
-        <h3>選択された都道府県：</h3>
-        <ul>
-          {selectedPrefectures.length > 0 ? (
-            selectedPrefectures.map(prefCode => {
-              const selectedPref = prefectures.find(p => p.prefCode === prefCode);
-              return selectedPref ? (
-                <li key={selectedPref.prefCode}>{selectedPref.prefName}</li>
-              ) : null;
-            })
-          ) : (
-            <li>選択されていません</li>
-          )}
-        </ul>
-      </div> */}
-    </div>
+    </section>
   );
 };
 
-export default PrefectureList;
+export default PrefectureSelect;
