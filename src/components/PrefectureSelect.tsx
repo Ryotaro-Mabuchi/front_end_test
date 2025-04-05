@@ -37,16 +37,17 @@ const PrefectureSelect: React.FC<PrefectureSelectProps> = ({
 
   return (
     <section className="prefecture-select-container">
-      <h2 className="prefecture-select-title">表示する都道府県を選択してください(複数選択可)</h2>
+      <h2 className="prefecture-select-title">表示する都道府県(複数選択可)</h2>
       <ul className="prefecture-list">
         {prefectures.map(prefecture => (
           <li key={prefecture.prefCode} className="prefecture-item">
             <input
               type="checkbox"
-              value={prefecture.prefCode}
+              checked={selectedPrefectures.some(pref => pref.prefCode === prefecture.prefCode)}
               onChange={() => handlePrefectureChange(prefecture.prefCode)}
+              id={`prefecture-${prefecture.prefCode}`}
             />
-            <label className="prefecture-label">{prefecture.prefName}</label>
+            <label htmlFor={`prefecture-${prefecture.prefCode}`}>{prefecture.prefName}</label>
           </li>
         ))}
       </ul>

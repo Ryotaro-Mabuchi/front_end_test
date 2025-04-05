@@ -20,15 +20,17 @@ const TopPopulationGraph: React.FC = () => {
         selectedPrefectures={selectedPrefectures}
         onPrefectureChange={setSelectedPrefectures}
       />
-      <PopulationCategorySelect
-        selectedCategory={selectedCategory}
-        onCategoryChange={setSelectedCategory}
-      />
       {selectedPrefectures.length > 0 && (
-        <PopulationGraph
-          selectedPrefectures={selectedPrefectures}
-          selectedCategory={selectedCategory}
-        />
+        <>
+          <PopulationCategorySelect
+            selectedCategory={selectedCategory}
+            onCategoryChange={setSelectedCategory}
+          />
+          <PopulationGraph
+            selectedPrefectures={selectedPrefectures}
+            selectedCategory={selectedCategory}
+          />
+        </>
       )}
     </div>
   );

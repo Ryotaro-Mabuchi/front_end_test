@@ -14,22 +14,22 @@ const PopulationCategorySelect: React.FC<PopulationCategorySelectProps> = ({
 }) => {
   return (
     <section className="populaton-category-select-container">
-      <h3 className="population-category-select-title">表示する人口カテゴリ：</h3>
-      <div className="population-category-options">
+      <h3 className="population-category-select-title">表示する人口カテゴリ</h3>
+      <ul className="population-category-list">
         {PopulationCategories.map(({ categorynumber, categoryname }) => (
-          <div key={categorynumber} className="population-category-item">
+          <li key={categorynumber} className="population-category-item">
             <input
               type="radio"
               name="populationcategory"
               value={categorynumber}
               checked={selectedCategory.categorynumber === categorynumber}
               onChange={() => onCategoryChange({ categorynumber, categoryname })}
-              className="population-category-radio"
+              id={`category-${categorynumber}`}
             />
-            <label className="population-category-label">{categoryname}</label>
-          </div>
+            <label htmlFor={`category-${categorynumber}`}>{categoryname}</label>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 };

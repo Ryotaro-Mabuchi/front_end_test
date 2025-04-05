@@ -1,10 +1,11 @@
 .header {
   text-align: center;
   padding: 20px;
-  background-color: #f4f4f4;
+  background-color: rgb(11, 11, 11);
 }
 
 .header h1 {
+  color: #fff;
   margin: 0;
   font-size: 24px;
 }
