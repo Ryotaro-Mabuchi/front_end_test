@@ -1,6 +1,5 @@
 import React from 'react';
 
-// タイトル部分のコンポーネント
 const Header: React.FC = () => {
   return (
     <header style={{ textAlign: 'center', padding: '20px', backgroundColor: '#f4f4f4' }}>

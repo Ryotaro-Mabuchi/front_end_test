@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { API_BASE_URL } from '../constants/constants';
 import { PrefecturePopulation } from '../types/population';
 
 const getPopulationAPI = async (
@@ -9,7 +10,7 @@ const getPopulationAPI = async (
   try {
     for (const pref of selectedPrefectures) {
       const response = await axios.get(
-        `https://yumemi-frontend-engineer-codecheck-api.vercel.app/api/v1/population/composition/perYear?prefCode=${pref.prefCode}`,
+        `${API_BASE_URL}/population/composition/perYear?prefCode=${pref.prefCode}`,
         {
           headers: {
             'X-API-KEY': process.env.REACT_APP_API_KEY,
