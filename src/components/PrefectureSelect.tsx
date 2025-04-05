@@ -26,7 +26,7 @@ const PrefectureSelect: React.FC<PrefectureSelectProps> = ({
   // チェックボックスの状態から選択された都道府県のリストを管理する
   const handlePrefectureChange = (prefCode: number) => {
     const selectedPref = prefectures.find(pref => pref.prefCode === prefCode);
-    if (!selectedPref) return; // `undefined`の場合は処理を中断(何も選択されていない状態)
+    if (!selectedPref) return;
 
     const updatedPrefectures = selectedPrefectures.some(pref => pref.prefCode === prefCode)
       ? selectedPrefectures.filter(pref => pref.prefCode !== prefCode) // すでにリストにある場合は除外

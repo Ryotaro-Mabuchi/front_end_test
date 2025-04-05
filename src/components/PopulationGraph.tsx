@@ -47,9 +47,9 @@ const PopulationGraph: React.FC<PopulationGraphProps> = ({
           <CartesianGrid strokeDasharray={chartSettings.strokeDasharray} />
           <XAxis
             dataKey="year"
-            domain={['dataMin', 'dataMax']} // 年の範囲を自動的に調整
+            domain={['dataMin', 'dataMax']}
             type="number"
-            tickCount={chartSettings.Xaxistickcount} // 目盛りの数を調整
+            tickCount={chartSettings.Xaxistickcount}
             label={chartSettings.Xaxislabel}
           />
           <YAxis tickFormatter={value => `${value.toLocaleString()}`} />
@@ -74,12 +74,12 @@ const PopulationGraph: React.FC<PopulationGraphProps> = ({
 
             return (
               <Line
-                key={prefPopulation.prefCode} // 都道府県コードをkey
+                key={prefPopulation.prefCode}
                 type="monotone"
                 dataKey="population"
                 stroke={lineColor} //都道府県コードによる色
                 data={chartData}
-                name={prefPopulation.prefName} // 都道府県名を表示
+                name={prefPopulation.prefName}
               />
             );
           })}
