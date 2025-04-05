@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import PopulationGraphPage from './pages/PopulationGraphPage';
 
 const App: React.FC = () => {

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import getPrefecturesApi from '../api/GetPrefetures';
+import '../styles/PrefectureSelect.css';
 import { Prefecture } from '../types/prefecture';
 
 interface PrefectureSelectProps {
@@ -35,27 +36,21 @@ const PrefectureSelect: React.FC<PrefectureSelectProps> = ({
   };
 
   return (
-    <div>
-      <h2>都道府県リスト</h2>
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap', //折り返しを許可する
-          gap: '10px', //アイテム間の間隔
-        }}
-      >
+    <section className="prefecture-select-container">
+      <h2 className="prefecture-select-title">表示する都道府県を選択してください(複数選択可)</h2>
+      <ul className="prefecture-list">
         {prefectures.map(prefecture => (
-          <div key={prefecture.prefCode} style={{ flex: '1 0 7%', marginBottom: '10px' }}>
+          <li key={prefecture.prefCode} className="prefecture-item">
             <input
               type="checkbox"
               value={prefecture.prefCode}
               onChange={() => handlePrefectureChange(prefecture.prefCode)}
             />
-            <label>{prefecture.prefName}</label>
-          </div>
+            <label className="prefecture-label">{prefecture.prefName}</label>
+          </li>
         ))}
-      </div>
-    </div>
+      </ul>
+    </section>
   );
 };
 

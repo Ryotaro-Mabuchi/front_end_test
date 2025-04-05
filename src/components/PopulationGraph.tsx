@@ -11,6 +11,7 @@ import {
 } from 'recharts';
 import getPopulationAPI from '../api/GetPopulation';
 import { chartSettings, generateColorFromPrefCode } from '../constants/populationgraph';
+import '../styles/PopulationGraph.css';
 import { PopulationCategory, PopulationData, PrefecturePopulation } from '../types/population';
 
 interface PopulationGraphProps {
@@ -36,11 +37,11 @@ const PopulationGraph: React.FC<PopulationGraphProps> = ({
   }, [selectedPrefectures]);
 
   if (populationData.length === 0) {
-    return <div>データを読み込んでいます...</div>;
+    return <div className="population-graph-loading-text">データを読み込んでいます...</div>;
   }
 
   return (
-    <div>
+    <section className="population-graph-container">
       <ResponsiveContainer width={chartSettings.width} height={chartSettings.height}>
         <LineChart data={populationData[0]?.data || []} margin={chartSettings.margin}>
           <CartesianGrid strokeDasharray={chartSettings.strokeDasharray} />
@@ -83,7 +84,7 @@ const PopulationGraph: React.FC<PopulationGraphProps> = ({
           })}
         </LineChart>
       </ResponsiveContainer>
-    </div>
+    </section>
   );
 };
 
