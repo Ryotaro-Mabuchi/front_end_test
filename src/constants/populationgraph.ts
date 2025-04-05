@@ -18,8 +18,9 @@ export const chartSettings = {
 };
 
 export const generateColorFromPrefCode = (prefCode: number): string => {
-  const r = (prefCode * 100) % 256;
-  const g = (prefCode * 200) % 256;
-  const b = (prefCode * 300) % 256;
-  return `rgb(${r}, ${g}, ${b})`;
+  const h = (prefCode * 7) % 360;
+  const s = 80;
+  const l = 60;
+
+  return `hsl(${h}, ${s}%, ${l}%)`;
 };
