@@ -20,22 +20,15 @@ const TopPopulationGraph: React.FC = () => {
         selectedPrefectures={selectedPrefectures}
         onPrefectureChange={setSelectedPrefectures}
       />
-
-      {/* 都道府県が1つ以上選ばれた場合にのみ表示 */}
-      {selectedPrefectures.length > 0 ? (
-        <>
-          <PopulationCategorySelect
-            selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
-          />
-
-          <PopulationGraph
-            selectedPrefectures={selectedPrefectures}
-            selectedCategory={selectedCategory}
-          />
-        </>
-      ) : (
-        <div>都道府県を選択してください</div> // 都道府県が選ばれていない場合にメッセージを表示
+      <PopulationCategorySelect
+        selectedCategory={selectedCategory}
+        onCategoryChange={setSelectedCategory}
+      />
+      {selectedPrefectures.length > 0 && (
+        <PopulationGraph
+          selectedPrefectures={selectedPrefectures}
+          selectedCategory={selectedCategory}
+        />
       )}
     </div>
   );

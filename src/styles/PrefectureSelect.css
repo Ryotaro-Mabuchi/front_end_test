@@ -1,0 +1,38 @@
+.prefecture-select-container {
+  padding-left: 20px;
+}
+
+.prefecture-select-title {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.prefecture-list {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.prefecture-item {
+  display: flex;
+  align-items: center;
+  flex-basis: 7%;
+  margin-bottom: 10px;
+}
+
+.prefecture-label {
+  margin-left: 5px;
+}
+
+@media (max-width: 768px) {
+  .prefecture-item {
+    flex-basis: 22%;
+    margin-bottom: 15px;
+  }
+
+  .prefecture-label {
+    font-size: 15px;
+  }
+}
