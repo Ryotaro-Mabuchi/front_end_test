@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import PopulationCategorySelect from '../components/PopulationCategorySelect';
 import PopulationGraph from '../components/PopulationGraph';
 import PrefectureSelect from '../components/PrefectureSelect';
-import { INITIAL_POPULATION_CATEGORY } from '../constants/constants';
+import { INITIAL_POPULATION_CATEGORY } from '../constants/populationcategory';
 import { PopulationCategory } from '../types/population';
 import { Prefecture } from '../types/prefecture';
 
