@@ -1,5 +1,5 @@
 import React from 'react';
-import { populationCategories } from '../constants/constants';
+import { PopulationCategories } from '../constants/populationcategory';
 import { PopulationCategory } from '../types/population';
 
 interface PopulationCategorySelectProps {
@@ -13,7 +13,7 @@ const PopulationCategorySelect: React.FC<PopulationCategorySelectProps> = ({
 }) => {
   return (
     <div>
-      {populationCategories.map(({ categorynumber, categoryname }) => (
+      {PopulationCategories.map(({ categorynumber, categoryname }) => (
         <label key={categorynumber}>
           <input
             type="radio"

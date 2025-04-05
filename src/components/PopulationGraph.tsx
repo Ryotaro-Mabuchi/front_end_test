@@ -10,7 +10,7 @@ import {
   YAxis,
 } from 'recharts';
 import getPopulationAPI from '../api/GetPopulation';
-import { generateColorFromPrefCode } from '../constants/constants';
+import { chartSettings, generateColorFromPrefCode } from '../constants/populationgraph';
 import { PopulationCategory, PopulationData, PrefecturePopulation } from '../types/population';
 
 interface PopulationGraphProps {
@@ -41,17 +41,14 @@ const PopulationGraph: React.FC<PopulationGraphProps> = ({
 
   return (
     <div>
-      <ResponsiveContainer width="100%" height={400}>
-        <LineChart
-          data={populationData[0]?.data || []}
-          margin={{ top: 20, right: 30, left: 40, bottom: 5 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
+      <ResponsiveContainer width={chartSettings.width} height={chartSettings.height}>
+        <LineChart data={populationData[0]?.data || []} margin={chartSettings.margin}>
+          <CartesianGrid strokeDasharray={chartSettings.strokeDasharray} />
           <XAxis
             dataKey="year"
             domain={['dataMin', 'dataMax']} // 年の範囲を自動的に調整
             type="number"
-            tickCount={10} // 目盛りの数を調整
+            tickCount={chartSettings.tickCount} // 目盛りの数を調整
           />
           <YAxis />
           <Tooltip />
