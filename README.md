@@ -43,7 +43,9 @@ npm または yarn を使用して依存関係をインストールします。
 REACT_APP_API_KEY=api_key
 ```
 
-api_keyを実際のAPIキーに置き換えてください。
+api_keyを実際のAPIキーに置き換えてください。※APIキーは下記URL内のX-API-KEYです
+
+https://yumemi-frontend-engineer-codecheck-api.vercel.app/api-doc
 
 ### 4.ローカルでの動作確認
 
