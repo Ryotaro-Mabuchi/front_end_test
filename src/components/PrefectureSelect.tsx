@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import PopulationGraph from './PopulationGraph';
 import getPrefecturesApi from '../api/GetPrefetures';
 import { Prefecture } from '../types/prefecture';
 
-const PrefectureList: React.FC = () => {
-  const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
-  const [selectedPrefectures, setSelectedPrefectures] = useState<Prefecture[]>([]);
+interface PrefectureSelectProps {
+  selectedPrefectures: Prefecture[];
+  onPrefectureChange: (selectedPrefectures: Prefecture[]) => void;
+}
 
+const PrefectureSelect: React.FC<PrefectureSelectProps> = ({
+  selectedPrefectures,
+  onPrefectureChange,
+}) => {
+  const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
   // 都道府県データをAPIから取得する
   useEffect(() => {
     const fetchPrefectures = async () => {
@@ -19,24 +24,19 @@ const PrefectureList: React.FC = () => {
 
   // チェックボックスの状態から選択された都道府県のリストを管理する
   const handlePrefectureChange = (prefCode: number) => {
-    setSelectedPrefectures(prevSelected => {
-      const selectedPref = prefectures.find(pref => pref.prefCode === prefCode);
-      if (!selectedPref) return prevSelected; //見つからなかった場合
+    const selectedPref = prefectures.find(pref => pref.prefCode === prefCode);
+    if (!selectedPref) return; // `undefined`の場合は処理を中断(何も選択されていない状態)
 
-      // すでに選択済みであれば除外し、されていない場合は追加する
-      const isAlereadySelected = prevSelected.some(pref => pref.prefCode === prefCode);
-      if (isAlereadySelected) {
-        return prevSelected.filter(pref => pref.prefCode !== prefCode);
-      } else {
-        return [...prevSelected, selectedPref]; // selectedPrefはPrefecture型
-      }
-    });
+    const updatedPrefectures = selectedPrefectures.some(pref => pref.prefCode === prefCode)
+      ? selectedPrefectures.filter(pref => pref.prefCode !== prefCode) // すでにリストにある場合は除外
+      : [...selectedPrefectures, selectedPref]; // 新規選択であれば追加
+
+    onPrefectureChange(updatedPrefectures);
   };
 
   return (
     <div>
       <h2>都道府県リスト</h2>
-      {/* 横並びのためにflexboxを使用 */}
       <div
         style={{
           display: 'flex',
@@ -55,18 +55,8 @@ const PrefectureList: React.FC = () => {
           </div>
         ))}
       </div>
-
-      <div>
-        <ul>
-          {selectedPrefectures.length > 0 ? (
-            <PopulationGraph selectedPrefectures={selectedPrefectures} />
-          ) : (
-            <div>表示したい都道府県を選択してください</div>
-          )}
-        </ul>
-      </div>
     </div>
   );
 };
 
-export default PrefectureList;
+export default PrefectureSelect;
