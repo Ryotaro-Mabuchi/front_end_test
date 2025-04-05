@@ -49,9 +49,10 @@ const PopulationGraph: React.FC<PopulationGraphProps> = ({
             dataKey="year"
             domain={['dataMin', 'dataMax']} // 年の範囲を自動的に調整
             type="number"
-            tickCount={chartSettings.tickCount} // 目盛りの数を調整
+            tickCount={chartSettings.Xaxistickcount} // 目盛りの数を調整
+            label={chartSettings.Xaxislabel}
           />
-          <YAxis />
+          <YAxis tickFormatter={value => `${value.toLocaleString()}`} />
           <Tooltip />
           <Legend />
           {populationData.map(prefPopulation => {
