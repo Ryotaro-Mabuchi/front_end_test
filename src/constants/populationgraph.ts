@@ -1,8 +1,7 @@
 export const chartSettings = {
-  width: '100%', // 横幅
-  height: 400, // 高さ
+  width: '100%',
+  height: 400,
   margin: {
-    // マージン
     top: 20,
     right: 30,
     left: 40,
@@ -12,10 +11,10 @@ export const chartSettings = {
   Xaxislabel: {
     value: '年度',
     position: 'insideBottomRight',
-    offset: -10, // ラベル位置を調整
+    offset: -10,
     fontSize: 14,
   },
-  strokeDasharray: '3 3', // グリッドの点線のスタイル
+  strokeDasharray: '3 3',
 };
 
 export const generateColorFromPrefCode = (prefCode: number): string => {
