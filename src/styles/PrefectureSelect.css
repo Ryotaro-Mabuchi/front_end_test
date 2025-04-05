@@ -3,12 +3,10 @@
 }
 
 .prefecture-select-title {
-  font-size: 1.5rem;
   margin-bottom: 15px;
 }
 
 .prefecture-list {
-  list-style-type: none;
   padding: 0;
   display: flex;
   flex-wrap: wrap;
@@ -18,21 +16,22 @@
 .prefecture-item {
   display: flex;
   align-items: center;
-  flex-basis: 7%;
-  margin-bottom: 10px;
 }
 
-.prefecture-label {
-  margin-left: 5px;
+.prefecture-item input {
+  display: none;
 }
 
-@media (max-width: 768px) {
-  .prefecture-item {
-    flex-basis: 22%;
-    margin-bottom: 15px;
-  }
+.prefecture-item label {
+  color: #333;
+  font-size: 0.85rem;
+  border: 1px solid #333;
+  border-radius: 20px;
+  padding: 5px 20px;
+}
 
-  .prefecture-label {
-    font-size: 15px;
-  }
+.prefecture-item input:checked + label {
+  color: #fff;
+  background: rgb(11, 11, 11);
+  border: 1px solid rgb(78, 75, 75);
 }
