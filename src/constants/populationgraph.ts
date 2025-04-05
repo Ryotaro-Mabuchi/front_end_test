@@ -8,7 +8,13 @@ export const chartSettings = {
     left: 40,
     bottom: 5,
   },
-  tickCount: 10, // 目盛り数
+  Xaxistickcount: 10,
+  Xaxislabel: {
+    value: '年度',
+    position: 'insideBottomRight',
+    offset: -10, // ラベル位置を調整
+    fontSize: 14,
+  },
   strokeDasharray: '3 3', // グリッドの点線のスタイル
 };
 
