@@ -28,10 +28,17 @@
   border: 1px solid #333;
   border-radius: 20px;
   padding: 5px 20px;
+  cursor: pointer;
 }
 
 .prefecture-item input:checked + label {
   color: #fff;
   background: rgb(11, 11, 11);
   border: 1px solid rgb(78, 75, 75);
+}
+
+@media (hover: hover) {
+  .prefecture-item label:hover {
+    transform: scale(1.1);
+  }
 }
