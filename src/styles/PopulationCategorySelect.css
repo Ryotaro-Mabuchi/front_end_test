@@ -28,6 +28,7 @@
   border: 1px solid #333;
   border-radius: 20px;
   padding: 5px 20px;
+  cursor: pointer;
 }
 
 .population-category-item input:checked + label {
@@ -39,5 +40,11 @@
 @media screen and (max-width: 768px) {
   .population-category-item label {
     padding: 5px 10px;
+  }
+}
+
+@media (hover: hover) {
+  .population-category-item label:hover {
+    transform: scale(1.1);
   }
 }
