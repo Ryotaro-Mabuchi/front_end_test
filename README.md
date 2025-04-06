@@ -6,9 +6,10 @@
 
 URL：https://yumemi.notion.site/0e9ef27b55704d7882aab55cc86c999d
 
-## 取り組んだ期間と実際の作業時間
+## 取り組んだ期間と実際に割くことのできた時間
 
 2025/3/24(月)〜4/6(日)、トータル約30時間
+
 (至らない点が多々あると思います。テストコードについてはほとんどできておりません。)
 
 ## 必要な環境
@@ -34,6 +35,12 @@ npm または yarn を使用して依存関係をインストールします。
 `npm install`
 または
 `yarn install`
+
+※ビルドツールとしてcreate-react-appで作業を進めていたため、脆弱性の警告が出ておりました。(下記記事と同様)
+
+作業終盤にViteへの移行を試みたのですが、現状移行できておりません。
+
+参考URL：https://dev.classmethod.jp/articles/create-react-app-nth-check-postcss/
 
 ### 3.環境変数の設定
 
